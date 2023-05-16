@@ -1,13 +1,32 @@
 import { Request, Response } from 'express';
-
+import { StatusCodes } from 'http-status-codes';
+import * as yup from 'yup';
 
 interface ICities {
     name: string;
 }
+const bodyValidation: yup.ObjectSchema<ICities> = yup.object().shape({
 
-export const create = (req: Request<{},{}, ICities>, res: Response) =>{
+    name: yup.string().required().min(3),
 
-    console.log(req.body.name);
+});
 
-    return res.send('Create');  
+export const create = async (req: Request<{}, {}, ICities>, res: Response) => {
+    let validateData: ICities | undefined = undefined;
+
+    try {
+        validateData = await bodyValidation.validate(req.body);
+    } catch (error) {
+        const yupError = error as yup.ValidationError;
+        return res.json({
+            errors: {
+                default: yupError.message,
+            }
+        });
+    }
+
+
+    console.log(validateData);
+
+    return res.send('Create');
 };
