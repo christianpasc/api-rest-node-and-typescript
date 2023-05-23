@@ -13,7 +13,7 @@ describe('Cities - Delete By Id', () => {
 
 
         const resDeleted = await testServer
-            .delete('/cities/${res1.body}')
+            .delete(`/cities/${res1.body}`)
             .send();
 
         expect(resDeleted.statusCode).toEqual(StatusCodes.NO_CONTENT);

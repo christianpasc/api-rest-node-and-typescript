@@ -13,7 +13,7 @@ describe('Cities - Get By Id', () => {
 
 
         const resSearch = await testServer
-            .get('/cities/${res1.body}')
+            .get(`/cities/${res1.body}`)
             .send();
 
         expect(resSearch.statusCode).toEqual(StatusCodes.OK);

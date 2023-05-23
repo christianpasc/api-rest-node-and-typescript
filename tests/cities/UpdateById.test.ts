@@ -14,7 +14,7 @@ describe('Cities - Update By Id', () => {
 
 
         const resUpdated = await testServer
-            .put('/cities/${res1.body}')
+            .put(`/cities/${res1.body}`)
             .send({ name: 'New' });
 
         expect(resUpdated.statusCode).toEqual(StatusCodes.NO_CONTENT);
