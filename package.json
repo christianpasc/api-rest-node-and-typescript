@@ -7,8 +7,6 @@
   "private": false,
   "scripts": {
     "start": "ts-node-dev ./src/index.ts",
-    "production": "node ./build/index.js",
-    "postinstall": "tsc",
     "test": "jest"
   },
   "dependencies": {
