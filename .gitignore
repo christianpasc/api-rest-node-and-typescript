@@ -1382,3 +1382,4 @@ node_modules/yn/license
 node_modules/yn/package.json
 node_modules/yn/readme.md
 .env
+database.sqlite
