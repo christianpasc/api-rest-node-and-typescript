@@ -6,7 +6,7 @@ export const updateByID = async (id: number, city:Omit<ICities, 'id'>): Promise<
     try {
         const result = await Knex(ETableNames.city)
             .update(city)
-            .where('id', '=', id)
+            .where('id', '=', id);
 
         if (result > 0) return;
 
