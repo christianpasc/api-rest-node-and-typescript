@@ -2,6 +2,7 @@ import { Request, RequestHandler, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import * as yup from 'yup';
 import { validation } from '../../shared/middleware';
+import { CitiesProvider } from '../../database/providers/cities';
 
 interface IParamsProps {
     id?: number;
@@ -15,11 +16,23 @@ export const deleteByIdValidation = validation((getSchema) => ({
 
 export const deleteByID = async (req: Request<IParamsProps>, res: Response) => {
 
-    if (Number(req.params.id) === 9999) return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        errors: {
-            default: 'Register not found'
-        }
-    });
+    if (!req.params.id) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            errors: {
+                default: 'ID not informed.'
+            }
+        });
+
+    }
+
+    const result = await CitiesProvider.deleteByID(req.params.id);
+
+    if (result instanceof Error)
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: result.message
+            }
+        });
 
     return res.status(StatusCodes.NO_CONTENT).send();
 };

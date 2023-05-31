@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import * as yup from 'yup';
 import { validation } from '../../shared/middleware';
 import { ICities } from '../../database/models';
+import { CitiesProvider } from '../../database/providers/cities';
 
 interface IParamsProps {
     id?: number;
@@ -22,11 +23,23 @@ export const updateByIdValidation = validation((getSchema) => ({
 
 export const updateByID = async (req: Request<IParamsProps>, res: Response) => {
 
-    if (Number(req.params.id) === 9999) return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        errors: {
-            default: 'Register not found'
-        }
-    });
+    if (!req.params.id) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            errors: {
+                default: 'ID not informed.'
+            }
+        });
 
-    return res.status(StatusCodes.NO_CONTENT).send();
+    }
+
+    const result = await CitiesProvider.updateByID(req.params.id, req.body);
+
+    if (result instanceof Error)
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: result.message
+            }
+        });
+
+    return res.status(StatusCodes.NO_CONTENT).json(result);
 };
