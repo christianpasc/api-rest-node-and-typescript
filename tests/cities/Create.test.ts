@@ -7,7 +7,7 @@ describe('Cities - Create', () => {
 
         const res1 = await testServer
             .post('/cities')
-            .send({ nome: 'New York' });
+            .send({ name: 'New York' });
 
         expect(res1.statusCode).toEqual(StatusCodes.CREATED);
         expect(typeof res1.body).toEqual('number');
@@ -17,7 +17,7 @@ describe('Cities - Create', () => {
 
         const res1 = await testServer
             .post('/cities')
-            .send({ nome: 'Ne' });
+            .send({ name: 'Ne' });
 
         expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
         expect(res1.body).toHaveProperty('errors.body.name');
